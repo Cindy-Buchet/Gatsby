@@ -1,55 +1,75 @@
-/**
- * Layout component that queries for data
- * with Gatsby's useStaticQuery component
- *
- * See: https://www.gatsbyjs.org/docs/use-static-query/
- */
-
 import React from "react"
-import PropTypes from "prop-types"
-import { useStaticQuery, graphql } from "gatsby"
+import { Link } from "gatsby"
 
-import Header from "./header"
-import "./layout.css"
+import { rhythm, scale } from "../utils/typography"
 
-const Layout = ({ children }) => {
-  const data = useStaticQuery(graphql`
-    query SiteTitleQuery {
-      site {
-        siteMetadata {
-          title
-        }
-      }
+class Layout extends React.Component {
+  render() {
+    const { location, title, children } = this.props
+    const rootPath = `${__PATH_PREFIX__}/`
+    let header
+
+    if (location.pathname === rootPath) {
+      header = (
+        <h1
+          style={{
+            ...scale(1.5),
+            marginBottom: rhythm(1.5),
+            marginTop: 0,
+          }}
+        >
+          <Link
+            style={{
+              boxShadow: `none`,
+              textDecoration: `none`,
+              color: `inherit`,
+            }}
+            to={`/`}
+          >
+            {title}
+          </Link>
+        </h1>
+      )
+    } else {
+      header = (
+        <h3
+          style={{
+            fontFamily: `Montserrat, sans-serif`,
+            marginTop: 0,
+          }}
+        >
+          <Link
+            style={{
+              boxShadow: `none`,
+              textDecoration: `none`,
+              color: `inherit`,
+            }}
+            to={`/`}
+          >
+            {title}
+          </Link>
+        </h3>
+      )
     }
-  `)
-
-  return (
-    <>
-      <Header/>
-      <div>
+    return (
+      <div
+        style={{
+          marginLeft: `auto`,
+          marginRight: `auto`,
+          maxWidth: rhythm(24),
+          padding: `${rhythm(1.5)} ${rhythm(3 / 4)}`,
+        }}
+      >
+        <header>{header}</header>
         <main>{children}</main>
         <footer>
-          <section id="footer">
-          <ul class="icons">
-              <li><a href="#" className="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li>
-              <li><a href="#" className="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li>
-              <li><a href="#" className="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
-              <li><a href="#" className="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
-              <li><a href="#" className="icon solid alt fa-envelope"><span class="label">Email</span></a></li>
-          </ul>
-              <ul className="copyright">
-                  <li>&copy; Untitled</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li><li>Demo Images: <a href="http://unsplash.com">Unsplash</a></li>
-              </ul>
-          </section>
-
+          © {new Date().getFullYear()}, Fait par
+          {` `}
+          <a href="https://www.gatsbyjs.org">Gatsby</a>
         </footer>
       </div>
-    </>
-  )
-}
-
-Layout.propTypes = {
-  children: PropTypes.node.isRequired,
+    )
+  }
 }
 
 export default Layout
